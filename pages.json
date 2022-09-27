@@ -1,0 +1,54 @@
+{
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tabbar/scan/index",
+			"style": {
+				"navigationBarTitleText": "扫描"
+			}
+		},
+		{
+			"path": "pages/tabbar/tools/index",
+			"style": {
+				"navigationBarTitleText": "工具"
+			}
+		},
+		{
+			"path": "pages/tabbar/me/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"borderStyle": "black",
+		"backgroundColor": "#333",
+		"color": "#8F8F94",
+		"selectedColor": "#f33e54",
+		"list": [{
+				"pagePath": "pages/tabbar/tools/index",
+				"iconPath": "static/images/tabbar/home.png",
+				"selectedIconPath": "static/images/tabbar/homeactive.png",
+				"text": "工具"
+			},
+			{
+				"pagePath": "pages/tabbar/scan/index",
+				"iconPath": "static/images/tabbar/guanzhu.png",
+				"selectedIconPath": "static/images/tabbar/guanzhuactive.png",
+				"text": "扫描"
+			},
+			{
+				"pagePath": "pages/tabbar/me/index",
+				"iconPath": "static/images/tabbar/me.png",
+				"selectedIconPath": "static/images/tabbar/meactive.png",
+				"text": "我的"
+			}
+		]
+	}
+}
