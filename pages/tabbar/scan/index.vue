@@ -7,7 +7,8 @@
 		 
 		 <view class="btn-box">
 			<button  type="primary" @click="scan">扫描</button>
-			<button type="primary">复制内容</button>
+			<button v-show="content.length>0" type="primary" @click="copyContent">复制内容</button>
+			<button v-show="content.length>0" type="primary" @click="clearContent">内容清空</button>
 		 </view>
 	</view>
 </template>
@@ -25,7 +26,33 @@
 		},
 		methods: {
 			scan(){
-				this.content="aaaaaaaaaaaaaaaaaaa"
+				// 允许从相机和相册扫码
+				let _that = this;
+				uni.scanCode({
+					success: function (res) {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+						_that.content=res.result;
+					}
+				});
+			},
+			copyContent(){
+				let _that = this;
+				uni.setClipboardData({
+					data: _that.content,
+					success:  () =>{
+						uni.showToast({
+							title: '复制成功',
+							icon:"success",
+							duration: 1000
+						});
+						
+					}
+				});
+
+			},
+			clearContent(){
+				this.content='';
 			},
 			bindTextAreaBlur(e) {
 				console.log(e.detail.value)
@@ -34,7 +61,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.container {
 		padding: 20upx;
 		.text-box{
@@ -44,6 +71,7 @@
 		}
 		
 		.btn-box{
+			margin-top: 20upx;
 			
 			button{
 				margin-top: 10upx;

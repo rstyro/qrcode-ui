@@ -19,7 +19,25 @@
 				"navigationBarTitleText": "我的"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/tabbar/tools/module/mark-code",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "制作二维码",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/tabbar/tools/module/view-code",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "下载二维码",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -30,23 +48,23 @@
 		"borderStyle": "black",
 		"backgroundColor": "#333",
 		"color": "#8F8F94",
-		"selectedColor": "#f33e54",
+		"selectedColor": "#f4ea2a",
 		"list": [{
 				"pagePath": "pages/tabbar/tools/index",
-				"iconPath": "static/images/tabbar/home.png",
-				"selectedIconPath": "static/images/tabbar/homeactive.png",
+				"iconPath": "static/images/tabbar/tools.png",
+				"selectedIconPath": "static/images/tabbar/tools1.png",
 				"text": "工具"
 			},
 			{
 				"pagePath": "pages/tabbar/scan/index",
-				"iconPath": "static/images/tabbar/guanzhu.png",
-				"selectedIconPath": "static/images/tabbar/guanzhuactive.png",
+				"iconPath": "static/images/tabbar/scan.png",
+				"selectedIconPath": "static/images/tabbar/scan1.png",
 				"text": "扫描"
 			},
 			{
 				"pagePath": "pages/tabbar/me/index",
-				"iconPath": "static/images/tabbar/me.png",
-				"selectedIconPath": "static/images/tabbar/meactive.png",
+				"iconPath": "static/images/tabbar/user.png",
+				"selectedIconPath": "static/images/tabbar/user1.png",
 				"text": "我的"
 			}
 		]
