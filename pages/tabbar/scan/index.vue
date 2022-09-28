@@ -1,14 +1,13 @@
 <template>
 	<view class="container">
-		<textarea maxlength="-1" class="text-box" 
+		<textarea maxlength="10208" class="text-box" 
 		:value="content"
-		disabled="true"
-		 @blur="bindTextAreaBlur" placeholder="扫描二维码后的内容"  />
+		 @input="bindTextAreaBlur" placeholder="扫描二维码后的内容"  />
 		 
 		 <view class="btn-box">
-			<button  type="primary" @click="scan">扫描</button>
+			<button type="primary" @click="scan" >{{content.length>0?'继续扫描':'扫描'}}</button>
 			<button v-show="content.length>0" type="primary" @click="copyContent">复制内容</button>
-			<button v-show="content.length>0" type="primary" @click="clearContent">内容清空</button>
+			<button v-show="content.length>0" type="primary" @click="toCode">生成二维码</button>
 		 </view>
 	</view>
 </template>
@@ -51,12 +50,26 @@
 				});
 
 			},
-			clearContent(){
-				this.content='';
-			},
 			bindTextAreaBlur(e) {
-				console.log(e.detail.value)
-			}
+				this.content=e.detail.value;
+			},
+			toCode() {
+				// 生成二维码
+				//在起始页面跳转到test.vue页面并传递参数
+				console.log("mark-:", this.content);
+				if(this.content){
+					const text = encodeURIComponent(this.content);
+					uni.navigateTo({
+						url: '/pages/tabbar/tools/module/view-code?content=' + text
+					});
+				}else{
+					uni.showToast({
+						title: '请输入内容',
+						icon: "error",
+						duration: 1000
+					});
+				}
+			},
 		}
 	}
 </script>
@@ -64,10 +77,13 @@
 <style lang="scss" scoped>
 	.container {
 		padding: 20upx;
-		.text-box{
-			min-height: 200px;
-			width: 100%;
-			border:  1px solid antiquewhite;
+		
+		$padding: 40rpx;
+		
+		.text-box {
+			width: calc(100% - $padding);
+			border: 1px solid antiquewhite;
+			padding: 20rpx;
 		}
 		
 		.btn-box{

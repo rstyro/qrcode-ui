@@ -9,10 +9,10 @@
 					<view class="userImage">
 						<!-- <open-data type="userAvatarUrl"></open-data> -->
 						<!-- <img src="@/static/1.png" /> -->
-						<image :src="userInfo.avatarUrl" style="width: 150rpx; height: 150rpx;" :mode="mode"></image> 
+						<image :src="userInfo.avatarUrl" style="width: 150rpx; height: 150rpx;" :mode="mode"></image>
 					</view>
 				</view>
-				<view class="bottom">
+				<view class="bottom" >
 					<view class="left">
 						<view class="user-text">
 							<!-- <open-data type="userNickName"></open-data> -->
@@ -26,11 +26,11 @@
 				</view>
 			</view>
 		</view>
-		<view class="list-card">
+
+		<!-- <view class="list-card">
 			<view class="card">
 				<view class="item item-bottom-solid" @click="devNotice">
 					<view class="left flex-center">
-						<!-- <image src="@/static/images/qiu.png" mode="aspectFit"></image> -->
 						<uni-icons class="icon" type="notification" size="25"></uni-icons>
 					</view>
 					<view class="center">
@@ -44,7 +44,6 @@
 			<view class="card">
 				<view class="item" @click="devNotice">
 					<view class="left flex-center">
-						<!-- <image src="@/static/images/1.png" mode="aspectFit"></image> -->
 						<uni-icons class="icon" type="compose" size="25"></uni-icons>
 					</view>
 					<view class="center">
@@ -55,13 +54,13 @@
 					</view>
 				</view>
 			</view>
-			
-			
-			
-		</view>
+		</view> -->
+
+
+
 
 		<view class="quit flex-center">
-			<view class="btn flex-center" v-if="userInfo.needLogin" @click="login">登录</view>
+			<view class="btn flex-center" v-if="userInfo.needLogin" @click="weixinLogin">登录</view>
 			<view class="btn flex-center" v-else @click="logout">退出登录</view>
 		</view>
 
@@ -111,7 +110,7 @@
 					overflow: hidden;
 					border-radius: 50%;
 					border: 2px solid white;
-				
+
 				}
 			}
 
@@ -220,21 +219,26 @@
 				userInfo: {
 					avatarUrl: '../../../static/user.png',
 					nickName: '皮卡二维码',
-					needLogin: true
+					needLogin: true,
+					city: "",
+					country: "",
+					gender: 0,
+					language: "zh_CN",
+					province: ""
 				},
-				mode:"widthFix"
+				mode: "widthFix"
 			};
 		},
-		mounted() {
-			console.log("mounted");
+		onLoad() {
+			console.log("onLoad");
 			try {
 				const info = uni.getStorageSync('qr_user_info');
 				if (info) {
-					this.userInfo=info;
+					this.userInfo = info;
 				}
 			} catch (e) {
 				// error
-				console.log("获取缓存错误err:",e);
+				console.log("获取缓存错误err:", e);
 			}
 		},
 		//监听页面显示。页面每次出现在屏幕上都触发，包括从下级页面点返回露出当前页面
@@ -253,35 +257,11 @@
 		},
 		methods: {
 			devNotice() {
+				console.log("notice。。。");
 				uni.showToast({
 					title: '功能开发中...',
 					icon: "success",
 					duration: 1000
-				});
-
-			},
-			login() {
-				let _that = this;
-				uni.login({
-					provider: 'weixin',
-					success: function(loginRes) {
-						// 获取用户信息
-						uni.getUserInfo({
-							provider: 'weixin',
-							success: function(infoRes) {
-								// console.log('用户昵称为1：', JSON.stringify(infoRes.userInfo));
-								if (infoRes.userInfo) {
-									_that.userInfo.nickName = infoRes.userInfo.nickName;
-									_that.userInfo.avatarUrl = infoRes.userInfo.avatarUrl;
-									_that.userInfo.needLogin = false;
-									_that.saveInfo();
-								}
-
-
-
-							}
-						});
-					}
 				});
 			},
 			logout() {
@@ -291,7 +271,7 @@
 				this.saveInfo();
 			},
 			saveInfo() {
-				let _that=this;
+				let _that = this;
 				uni.setStorage({
 					key: 'qr_user_info',
 					data: _that.userInfo,
@@ -299,7 +279,72 @@
 						console.log('缓存添加成功');
 					}
 				});
-			}
+			},
+			getUserInfo() {
+				return new Promise((resolve, reject) => {
+					uni.getUserProfile({
+						lang: 'zh_CN',
+						desc: '用户登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，
+						success: (res) => {
+							resolve(res.userInfo)
+						},
+						fail: (err) => {
+							reject(err)
+						}
+					})
+				})
+			},
+			getLogin() {
+				return new Promise((resolve, reject) => {
+					uni.login({
+						success:(res) =>{
+							console.log('res：', res);
+							console.log('code：', res.code);
+							//todo 客户端成功获取授权临时票据（code）,向业务服务器发起登录请求
+							resolve(res)
+						},
+						fail: (err) => {
+							console.log(err, 'logoer')
+							reject(err)
+						}
+					})
+				})
+			},
+			weixinLogin() {
+				uni.getProvider({
+					service: 'oauth',
+					success: (res)=> {
+						//支持微信、qq和微博等
+						if (~res.provider.indexOf('weixin')) {
+							console.log('res：',res)
+							let userInfo = this.getUserInfo();
+							let loginRes = this.getLogin();
+							Promise.all([userInfo, loginRes]).then((result) => {
+								let userInfo = result[0];
+								let loginRes = result[1];
+								
+								console.log("userInfo:",userInfo);
+								console.log("loginRes:",loginRes);
+								
+								this.userInfo = userInfo;
+								this.userInfo.needLogin = false;
+								console.log("userInfo:",this.userInfo);
+								this.saveInfo();
+
+							})
+						}else if(~res.provider.indexOf('qq')){
+							//todo 
+						}
+					},
+					fail: (err) =>{
+						// uni.hideLoading();
+						uni.showToast({
+							icon: 'none',
+							title: err
+						})
+					}
+				})
+			},
 		},
 	};
 </script>

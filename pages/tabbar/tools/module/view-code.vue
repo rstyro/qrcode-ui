@@ -1,9 +1,9 @@
 <template>
 	<view class="container">
-		<canvas type="2d" style="width: 260px; height: 260px;" id="myQrcode"></canvas>
+		<canvas type="2d" style="width: 260px; height: 260px;margin: 20rpx auto;" id="myQrcode"></canvas>
 		<view class="btn-box">
-			<button type="primary" @click="toCode">生成二维码</button>
-			<button v-show="content.length>0" type="primary" @click="clearContent">内容清空</button>
+			<button type="primary" @click="downloadImg">下载二维码</button>
+			<button type="primary" @click="toBack">返回编辑</button>
 		</view>
 	</view>
 </template>
@@ -14,31 +14,41 @@
 	export default {
 		data() {
 			return {
-				content: ''
+				content: '',
+				filePath:''
 			}
 		},
 		onLoad(option) {
-			console.log("onLoad");
 			if(option.content){
-				this.content=option.content;
+				this.content=decodeURIComponent(option.content);
 			}
 		},
 		onShow() {
 			if(this.content){
-				console.log("this.content111:",this.content);
 				this.handleMakeQrcode(this.content);
 			}
 		},
 		created() {
 		},
 		methods: {
-			toCode() {
-				// 生成二维码
-				this.handleMakeQrcode(this.content);
+			downloadImg() {
+				uni.saveImageToPhotosAlbum({
+					filePath: this.filePath,
+					success: () =>{
+						console.log('this.filePath：',this.filePath);
+						uni.showToast({
+							title: '保存成功',
+							icon: "success",
+							duration: 500
+						});
+					}
+				});
 			},
 
-			clearContent() {
-				this.content = '';
+			toBack() {
+				uni.navigateBack({
+					delta: 1
+				});
 			},
 			/**
 			* 生成二维码（没有使用叠加图片）
@@ -46,6 +56,7 @@
 			* */
 			handleMakeQrcode(text) {
 				console.log("text:",text);
+				let _that = this;
 			    return new Promise((resolve, reject) => {
 			    	const query = uni.createSelectorQuery()
 			    	query.select('#myQrcode').fields({
@@ -62,8 +73,9 @@
 			    			canvas: canvas,
 			    			// #endif
 			    			canvasId: 'myQrcode',
-			    			width: 127,
-			    			padding: 0,
+			    			width: 260,
+			    			padding: 20,
+							paddingColor:'#ffe',
 			    			background: '#ffffff',
 			    			foreground: '#000000',
 			    			text: text,
@@ -76,16 +88,14 @@
 			                // #endif
 			    			x: 0,
 			    			y: 0,
-			    			width: 127,
-			    			height: 127,
-			    			destWidth: 127,
-			    			destHeight: 127,
 			    			success(res) {
+								console.log("res.tempFilePath:",res.tempFilePath);
+								_that.filePath=res.tempFilePath;
 			                    resolve(res.tempFilePath); // 临时路径
 			    			},
 			    			fail(res) {
 			    			    console.error(res);
-			                           reject();
+			                    reject();
 			    			}
 			    		})
 			    	});

@@ -3,15 +3,15 @@ export default {
 	onLaunch: function() {
 		console.log('App Launch');
 
-		setTimeout(() => {
-			// uni.setTabBarBadge({
-			// 	index: 2,
-			// 	text: '31'
-			// });
-			uni.showTabBarRedDot({
-				index: 2
-			});
-		}, 1000);
+		// setTimeout(() => {
+		// 	// uni.setTabBarBadge({
+		// 	// 	index: 2,
+		// 	// 	text: '31'
+		// 	// });
+		// 	uni.showTabBarRedDot({
+		// 		index: 2
+		// 	});
+		// }, 1000);
 	},
 	onShow: function() {
 		console.log('App Show');

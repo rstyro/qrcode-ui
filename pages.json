@@ -2,42 +2,44 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/tabbar/scan/index",
-			"style": {
-				"navigationBarTitleText": "扫描"
-			}
-		},
-		{
 			"path": "pages/tabbar/tools/index",
 			"style": {
 				"navigationBarTitleText": "工具"
 			}
 		},
 		{
+			"path": "pages/tabbar/scan/index",
+			"style": {
+				"navigationBarTitleText": "扫描"
+			}
+		},
+
+		{
 			"path": "pages/tabbar/me/index",
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
+		}, {
+			"path": "pages/tabbar/tools/module/mark-code",
+			"style": {
+				"navigationBarTitleText": "制作二维码",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/tabbar/tools/module/view-code",
+			"style": {
+				"navigationBarTitleText": "下载二维码",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/tabbar/tools/module/avatar-mix",
+			"style": {
+				"navigationBarTitleText": "国庆头像合成",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/tabbar/tools/module/mark-code",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "制作二维码",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/tabbar/tools/module/view-code",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "下载二维码",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
