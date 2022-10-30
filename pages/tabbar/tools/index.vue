@@ -26,6 +26,15 @@
 				</view>
 			</view>
 		</uni-card>
+		
+		// #ifdef MP
+		<uni-card>
+			<view class="item">
+				<ad unit-id="adunit-b498c5122298dcb9"></ad>
+			</view>
+		</uni-card>
+		// #endif
+		
 
 	</view>
 
@@ -41,6 +50,16 @@
 		onLoad() {
 			// this.test();
 		},
+		//分享
+		onShareAppMessage(res) {
+			if (res.from === 'menu') {// 来自页面内分享按钮
+			  console.log(res.target)
+			}
+			return {
+			  title: '皮卡二维码',
+			  path: '/pages/tabbar/scan/index'
+			}
+		  },
 		methods: {
 			toMarkCode() {
 				this.toPage("/pages/tabbar/tools/module/mark-code");

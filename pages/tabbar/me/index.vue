@@ -241,6 +241,16 @@
 				console.log("获取缓存错误err:", e);
 			}
 		},
+		//分享
+		onShareAppMessage(res) {
+			if (res.from === 'menu') {// 来自页面内分享按钮
+			  console.log(res.target)
+			}
+			return {
+			  title: '皮卡二扫描',
+			  path: '/pages/tabbar/scan/index'
+			}
+		  },
 		//监听页面显示。页面每次出现在屏幕上都触发，包括从下级页面点返回露出当前页面
 		beforeDestroy() {
 			console.log("beforeDestroy");

@@ -16,7 +16,7 @@
 			</view>
 
 			<view class="right">
-				<button type="primary" @click="getAvatarInfo">获取头像</button>
+				<!-- <button type="primary" @click="getAvatarInfo">获取头像</button> -->
 				<button type="primary" @click="uploadImage">上传头像</button>
 				<button type="primary" @click="saveAvatar">保存头像</button>
 			</view>
